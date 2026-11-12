@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050d18">
+<title>GLACIER — The Dragon's Legacy</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #050d18;
+  --ice: #b4edff;
+  --blue: #59c6f3;
+  --muted: #8faabe;
+  --line: rgba(157,224,255,.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: #effaff;
+  font-family: 'DM Sans', sans-serif;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(ellipse at 50% 0%, #16496c, transparent 55%),
+    radial-gradient(ellipse at 10% 80%, #102b45, transparent 50%),
+    #050d18;
+}
+
+#snow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.noise {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+  opacity: .09;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 76px;
+  padding: 0 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  background: rgba(4,13,24,.55);
+  backdrop-filter: blur(20px);
+  z-index: 5;
+}
+
+.logo {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  letter-spacing: .3em;
+  font-weight: 700;
+}
+
+.logo span { color: var(--ice); }
+
+nav {
+  display: flex;
+  gap: 30px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #b8d2e3;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  transition: .3s;
+}
+
+nav a:hover { color: white; }
+
+.hero {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 120px 20px 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: #39b8f1;
+  opacity: .13;
+  filter: blur(160px);
+  border-radius: 50%;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  animation: entrance 1.4s ease both;
+}
+
+@keyframes entrance {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.overline {
+  color: var(--ice);
+  font-size: 10px;
+  letter-spacing: .48em;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+.hero h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(43px,9vw,108px);
+  line-height: 1.12;
+  font-weight: 500;
+  letter-spacing: .055em;
+  text-shadow: 0 0 55px rgba(89,198,243,.3);
+}
+
+.hero h1 em {
+  display: block;
+  font-style: normal;
+  color: var(--ice);
+  font-weight: 400;
+}
+
+.subtitle {
+  margin: 25px 0;
+  color: #a8c5d8;
+  font-size: 10px;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+}
+
+.hero-description {
+  max-width: 530px;
+  margin: auto;
+  color: #a8bdce;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 2;
+}
+
+.button {
+  min-height: 53px;
+  padding: 0 27px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid rgba(175,235,255,.45);
+  background: rgba(26,73,105,.45);
+  color: white;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .19em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: .35s;
+}
+
+.button:hover {
+  transform: translateY(-3px);
+  border-color: var(--ice);
+  box-shadow: 0 0 30px rgba(82,189,233,.25);
+}
+
+.button.primary {
+  background: linear-gradient(110deg,#b8efff,#57bce8);
+  border: none;
+  color: #061321;
+}
+
+.button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hero .button { margin-top: 38px; }
+
+.section {
+  max-width: 1120px;
+  margin: auto;
+  padding: 85px 24px;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 38px;
+}
+
+.label {
+  font-size: 10px;
+  letter-spacing: .4em;
+  color: var(--ice);
+  text-transform: uppercase;
+}
+
+.section-heading h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(29px,5vw,47px);
+  font-weight: 400;
+  margin: 17px 0;
+}
+
+.section-heading p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.cinema-card {
+  padding: 18px;
+  background: linear-gradient(145deg,rgba(17,45,69,.85),rgba(5,16,28,.95));
+  border: 1px solid var(--line);
+  box-shadow: 0 25px 90px rgba(0,0,0,.25);
+}
+
+.cinema-card video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: contain;
+  background: #01060b;
+}
+
+.video-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+  padding: 18px 3px 3px;
+  flex-wrap: wrap;
+}
+
+.video-meta h3 {
+  font-family: 'Cinzel', serif;
+  font-size: 17px;
+  font-weight: 400;
+}
+
+.video-meta span {
+  font-size: 9px;
+  letter-spacing: .2em;
+  color: var(--ice);
+}
+
+.player-status {
+  text-align: center;
+  color: var(--ice);
+  font-size: 10px;
+  letter-spacing: .25em;
+  margin: 22px 0;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 17px;
+}
+
+.control-button {
+  width: 43px;
+  height: 43px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  color: var(--ice);
+  background: transparent;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.control-button:hover {
+  background: rgba(85,181,225,.16);
+  border-color: var(--ice);
+}
+
+.control-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.progress-track {
+  flex: 1;
+  height: 3px;
+  background: #20394e;
+  cursor: pointer;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg,#49a9d9,#c5f3ff);
+}
+
+.time {
+  color: #9bb9cc;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.fullscreen { margin-left: auto; }
+
+.final {
+  display: none;
+  padding: 100px 20px;
+  text-align: center;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(ellipse at center,#123e5e 0%,#071625 60%,#050d18 100%);
+}
+
+.final.show {
+  display: block;
+  animation: entrance 1.2s ease both;
+}
+
+.final h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(36px,7vw,76px);
+  font-weight: 500;
+  line-height: 1.35;
+  color: #c9f1ff;
+  text-shadow: 0 0 45px rgba(80,190,255,.4);
+}
+
+.username {
+  font-size: clamp(18px,3vw,27px);
+  letter-spacing: .4em;
+  margin: 25px 0;
+}
+
+.signature {
+  color: #94bad0;
+  font-size: 10px;
+  letter-spacing: .35em;
+}
+
+.message {
+  max-width: 530px;
+  margin: 30px auto;
+  font-size: 13px;
+  color: #b5cad9;
+  line-height: 2;
+}
+
+.replay { margin-top: 35px; }
+
+footer {
+  padding: 35px 15px;
+  text-align: center;
+  color: #718ea3;
+  font-size: 9px;
+  letter-spacing: .3em;
+}
+
+@media(max-width:700px) {
+  header { height: 65px; padding: 0 18px; }
+  nav { gap: 14px; }
+  nav a { font-size: 8px; }
+  .hero { min-height: 90svh; }
+  .section { padding: 65px 16px; }
+  .cinema-card { padding: 10px; }
+  .video-meta h3 { font-size: 14px; }
+  .final { padding: 75px 15px; }
+}
+
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="snow"></canvas>
+<div class="noise"></div>
+
+<header>
+  <div class="logo">GLACIER <span>/</span> LEGACY</div>
+  <nav>
+    <a href="#cinematic">Cinematic</a>
+    <a href="#birthday">Birthday</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+
+    <div class="overline">A Legendary Birthday Experience</div>
+
+    <h1>
+      THE DRAGON'S
+      <em>LEGACY</em>
+    </h1>
+
+    <div class="subtitle">A Frozen Legend Awakens</div>
+
+    <p class="hero-description">
+      Beyond the frozen kingdom lies a legendary power.
+      Guarded by an ancient dragon, waiting for its next legend.
+    </p>
+
+    <button class="button primary" id="enterButton">
+      <svg viewBox="0 0 24 24">
+        <path d="M5 12h14M13 5l7 7-7 7"/>
+      </svg>
+      Enter Experience
+    </button>
+
+  </div>
+</section>
+
+<section class="section" id="cinematic">
+
+  <div class="section-heading">
+    <div class="label">The Legendary Cinematic</div>
+    <h2>The Glacier Awakens</h2>
+    <p>One dragon. One legendary weapon. One unforgettable tribute.</p>
+  </div>
+
+  <div class="cinema-card">
+
+    <video
+      id="cinemaVideo"
+      playsinline
+      preload="metadata"
+      controlsList="nodownload"
+      poster=""
+    >
+      <source src="videos/glacier-final.mp4" type="video/mp4">
+      Your browser does not support HTML video.
+    </video>
+
+    <div class="video-meta">
+      <h3>The Dragon's Legacy</h3>
+      <span>30 SECONDS · CINEMATIC</span>
+    </div>
+
+    <div class="player-status" id="status">
+      THE LEGEND IS WAITING
+    </div>
+
+    <div class="controls">
+
+      <button class="control-button" id="playButton" aria-label="Play or pause">
+        <svg id="playIcon" viewBox="0 0 24 24">
+          <path d="M8 5l12 7-12 7z"/>
+        </svg>
+      </button>
+
+      <div class="progress-track" id="progressTrack">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <span class="time" id="timeDisplay">00:00</span>
+
+      <button class="control-button fullscreen" id="fullscreenButton" aria-label="Fullscreen">
+        <svg viewBox="0 0 24 24">
+          <path d="M8 3H3v5M16 3h5v5M3 16v5h5M21 16v5h-5"/>
+        </svg>
+      </button>
+
+    </div>
+
+    <div style="text-align:center;margin-top:23px">
+      <button class="button primary" id="startButton">
+        <svg viewBox="0 0 24 24">
+          <path d="M8 5l12 7-12 7z"/>
+        </svg>
+        Play Full Cinematic
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<section class="final" id="birthday">
+
+  <div class="label">The Legend Is Yours</div>
+
+  <h2>
+    HAPPY BIRTHDAY
+    <br>
+    ARYAN BRO!
+  </h2>
+
+  <div class="username">UBENIC54</div>
+
+  <p class="message">
+    May every drop bring you legendary loot,
+    every battle bring you victory,
+    and every new year unlock another level of greatness.
+    Keep dominating, bro.
+  </p>
+
+  <div class="signature">FROM YOUR BROTHER, SAMBHAV</div>
+
+  <button class="button replay" id="replayButton">
+    <svg viewBox="0 0 24 24">
+      <path d="M20 7v5h-5M4 17v-5h5"/>
+      <path d="M5.5 9a7 7 0 0112-2L20 12M4 12l2.5 5a7 7 0 0012-2"/>
+    </svg>
+    Replay Experience
+  </button>
+
+</section>
+
+<footer>
+  GLACIER — THE DRAGON'S LEGACY
+  <br><br>
+  A PERSONAL BIRTHDAY TRIBUTE FOR ARYAN
+</footer>
+
+<script>
+
+/* VIDEO SOURCE */
+
+const VIDEO_SOURCE = "videos/glacier-final.mp4";
+
+const video = document.getElementById("cinemaVideo");
+const status = document.getElementById("status");
+const playIcon = document.getElementById("playIcon");
+const progressFill = document.getElementById("progressFill");
+const timeDisplay = document.getElementById("timeDisplay");
+const birthday = document.getElementById("birthday");
+
+let hasStarted = false;
+
+const playSVG = '<path d="M8 5l12 7-12 7z"/>';
+const pauseSVG = '<path d="M8 5v14M16 5v14"/>';
+
+function formatTime(seconds) {
+  if (!Number.isFinite(seconds)) return "00:00";
+
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+
+  return String(m).padStart(2,"0") + ":" +
+         String(s).padStart(2,"0");
+}
+
+function startExperience() {
+
+  hasStarted = true;
+
+  birthday.classList.remove("show");
+
+  video.currentTime = 0;
+
+  status.textContent = "THE DRAGON IS AWAKENING";
+
+  document.getElementById("cinematic")
+    .scrollIntoView({behavior:"smooth"});
+
+  video.play().catch(() => {
+    status.textContent = "TAP PLAY TO BEGIN";
+  });
+}
+
+/* ENTER EXPERIENCE */
+
+document.getElementById("enterButton")
+  .addEventListener("click", startExperience);
+
+/* MAIN PLAY BUTTON */
+
+document.getElementById("startButton")
+  .addEventListener("click", startExperience);
+
+/* CUSTOM PLAY / PAUSE */
+
+document.getElementById("playButton")
+  .addEventListener("click", () => {
+
+    if (!hasStarted) {
+      startExperience();
+      return;
+    }
+
+    if (video.paused) {
+      video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  });
+
+video.addEventListener("play", () => {
+  playIcon.innerHTML = pauseSVG;
+  status.textContent = "THE LEGEND IS UNFOLDING";
+});
+
+video.addEventListener("pause", () => {
+  playIcon.innerHTML = playSVG;
+
+  if (!video.ended) {
+    status.textContent = "CINEMATIC PAUSED";
+  }
+});
+
+/* VIDEO PROGRESS */
+
+video.addEventListener("timeupdate", () => {
+
+  if (!video.duration || !Number.isFinite(video.duration)) return;
+
+  const percentage =
+    (video.currentTime / video.duration) * 100;
+
+  progressFill.style.width = percentage + "%";
+
+  timeDisplay.textContent =
+    formatTime(video.currentTime);
+});
+
+/* SEEK BAR */
+
+document.getElementById("progressTrack")
+  .addEventListener("click", event => {
+
+    if (!video.duration) return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+
+    const position =
+      (event.clientX - rect.left) / rect.width;
+
+    video.currentTime = position * video.duration;
+  });
+
+/* CINEMATIC COMPLETE */
+
+video.addEventListener("ended", () => {
+
+  hasStarted = false;
+
+  progressFill.style.width = "100%";
+
+  playIcon.innerHTML = playSVG;
+
+  status.textContent = "THE LEGEND HAS BEEN DELIVERED";
+
+  birthday.classList.add("show");
+
+  birthday.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+});
+
+/* REPLAY */
+
+document.getElementById("replayButton")
+  .addEventListener("click", startExperience);
+
+/* FULLSCREEN */
+
+document.getElementById("fullscreenButton")
+  .addEventListener("click", async () => {
+
+    try {
+
+      const frame = document.querySelector(".cinema-card");
+
+      if (!document.fullscreenElement) {
+        await frame.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+
+    } catch(error) {
+      console.log("Fullscreen unavailable", error);
+    }
+  });
+
+/* SNOW PARTICLES */
+
+const canvas = document.getElementById("snow");
+const ctx = canvas.getContext("2d");
+
+let width, height;
+let particles = [];
+
+function resizeCanvas() {
+
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+
+  const count = Math.min(100, Math.floor(width / 12));
+
+  particles = Array.from({length:count}, () => ({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    radius: Math.random() * 1.8 + .4,
+    speed: Math.random() * .7 + .2,
+    drift: Math.random() * .5 - .25,
+    opacity: Math.random() * .5 + .15
+  }));
+}
+
+function animateSnow() {
+
+  ctx.clearRect(0,0,width,height);
+
+  particles.forEach(p => {
+
+    p.y += p.speed;
+    p.x += p.drift;
+
+    if (p.y > height) {
+      p.y = -5;
+      p.x = Math.random() * width;
+    }
+
+    if (p.x > width) p.x = 0;
+    if (p.x < 0) p.x = width;
+
+    ctx.beginPath();
+
+    ctx.arc(p.x,p.y,p.radius,0,Math.PI * 2);
+
+    ctx.fillStyle =
+      `rgba(190,235,255,${p.opacity})`;
+
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animateSnow);
+}
+
+window.addEventListener("resize", resizeCanvas);
+
+resizeCanvas();
+animateSnow();
+
+</script>
+
+</body>
+</html>
